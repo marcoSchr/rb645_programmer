@@ -5,9 +5,9 @@ use crate::channel::Dcs::D026N;
 use crate::channel::TxPower::Low;
 use crate::channel::{Channel, ChannelData};
 
-pub fn default_channels() -> Vec<Channel> {
+pub fn default_channels() -> Vec<Option<Channel>> {
     vec![
-        Channel {
+        Some(Channel {
             rx_frequency: 44600625,
             tx_frequency: 44600625,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -22,8 +22,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44601875,
             tx_frequency: 44601875,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -38,8 +38,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44603125,
             tx_frequency: 44603125,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -54,8 +54,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44604375,
             tx_frequency: 44604375,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -70,8 +70,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44605625,
             tx_frequency: 44605625,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -86,8 +86,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44606875,
             tx_frequency: 44606875,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -102,8 +102,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44608125,
             tx_frequency: 44608125,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -118,8 +118,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44609375,
             tx_frequency: 44609375,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -134,8 +134,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44610625,
             tx_frequency: 44610625,
             rx_ctcss_dcs: Dcs(D026N),
@@ -150,8 +150,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44611875,
             tx_frequency: 44611875,
             rx_ctcss_dcs: Dcs(D026N),
@@ -166,8 +166,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44613125,
             tx_frequency: 44613125,
             rx_ctcss_dcs: Dcs(D026N),
@@ -182,8 +182,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44614375,
             tx_frequency: 44614375,
             rx_ctcss_dcs: Dcs(D026N),
@@ -198,8 +198,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44615625,
             tx_frequency: 44615625,
             rx_ctcss_dcs: Dcs(D026N),
@@ -214,8 +214,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44616875,
             tx_frequency: 44616875,
             rx_ctcss_dcs: Dcs(D026N),
@@ -230,8 +230,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44618125,
             tx_frequency: 44618125,
             rx_ctcss_dcs: Dcs(D026N),
@@ -246,8 +246,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44619375,
             tx_frequency: 44619375,
             rx_ctcss_dcs: Dcs(D026N),
@@ -262,6 +262,12 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
+        }),
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
     ]
 }

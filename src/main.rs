@@ -215,7 +215,10 @@ fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Option<Channel
     Ok(data)
 }
 
-fn write_channels(serial_port: &mut Box<dyn SerialPort>, channels: Vec<Channel>) -> Result<(), ()> {
+fn write_channels(
+    serial_port: &mut Box<dyn SerialPort>,
+    channels: Vec<Option<Channel>>,
+) -> Result<(), ()> {
     if channels.len() != 16 {
         error!("Too many channels");
         Err(())
@@ -227,8 +230,12 @@ fn write_channels(serial_port: &mut Box<dyn SerialPort>, channels: Vec<Channel>)
             command.push(write_address_bytes[0]);
             command.push(write_address_bytes[1]);
             command.push(0x0b);
-            let channel_data: Vec<u8> = channel.into();
-            command.extend(channel_data);
+            if let Some(channel) = channel {
+                let channel_data: Vec<u8> = channel.into();
+                command.extend(channel_data);
+            } else {
+                command.extend([0xff; 11]);
+            }
             debug!("Sending command: {:x?}", command);
             let rx = send_command(serial_port, &command, 1)?;
             match rx[0] {
