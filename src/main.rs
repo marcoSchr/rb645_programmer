@@ -181,10 +181,10 @@ fn send_connect(serial_port: &mut Box<dyn SerialPort>) -> Result<(), ()> {
     Ok(())
 }
 
-fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Channel>, ()> {
+fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Option<Channel>>, ()> {
     let mut command = [0x52, 0x00, 0x00, 0x0b];
     let mut data = vec![];
-    for i in 0..16 {
+    for i in 0..22 {
         let read_address: i16 = (i) * 11;
         let read_address_bytes = read_address.to_be_bytes();
         command[1] = read_address_bytes[0];
@@ -194,13 +194,17 @@ fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Channel>, ()> 
         if rx[0] == 0x57 && rx[1] == command[1] && rx[2] == command[2] && rx[3] == 0x0b {
             let (_, rx_data) = rx.split_at(4);
             debug!("Received data from device: {:x?}", rx_data);
-            match rx_data.try_into() {
-                Ok(channel) => {
-                    data.push(channel);
-                }
-                Err(_) => {
-                    error!("Error converting data to channel");
-                    data.push(Channel::default());
+            if rx_data.iter().all(|x| *x == 0xff) {
+                data.push(None)
+            } else {
+                match rx_data.try_into() {
+                    Ok(channel) => {
+                        data.push(Some(channel));
+                    }
+                    Err(_) => {
+                        error!("Error converting data to channel");
+                        data.push(None);
+                    }
                 }
             }
         } else {
