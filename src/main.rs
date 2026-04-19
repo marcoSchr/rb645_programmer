@@ -1,7 +1,7 @@
 pub mod channel;
 
 use crate::channel::Channel;
-use crate::channel::default_channels::default_channels;
+use crate::channel::default_channels::{default_frs_channels, default_pmr_channels};
 use clap::{Parser, Subcommand};
 use env_logger::Builder;
 use log::{LevelFilter, debug, error, info};
@@ -17,7 +17,8 @@ const SERIAL_READ_DELAY: Duration = Duration::from_millis(10);
 #[derive(Subcommand, Debug)]
 enum Command {
     Read,
-    WriteDefault,
+    WriteDefaultPmr,
+    WriteDefaultFrs,
 }
 
 #[derive(Parser, Debug)]
@@ -181,10 +182,10 @@ fn send_connect(serial_port: &mut Box<dyn SerialPort>) -> Result<(), ()> {
     Ok(())
 }
 
-fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Channel>, ()> {
+fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Option<Channel>>, ()> {
     let mut command = [0x52, 0x00, 0x00, 0x0b];
     let mut data = vec![];
-    for i in 0..16 {
+    for i in 0..22 {
         let read_address: i16 = (i) * 11;
         let read_address_bytes = read_address.to_be_bytes();
         command[1] = read_address_bytes[0];
@@ -194,13 +195,17 @@ fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Channel>, ()> 
         if rx[0] == 0x57 && rx[1] == command[1] && rx[2] == command[2] && rx[3] == 0x0b {
             let (_, rx_data) = rx.split_at(4);
             debug!("Received data from device: {:x?}", rx_data);
-            match rx_data.try_into() {
-                Ok(channel) => {
-                    data.push(channel);
-                }
-                Err(_) => {
-                    error!("Error converting data to channel");
-                    data.push(Channel::default());
+            if rx_data.iter().all(|x| *x == 0xff) {
+                data.push(None)
+            } else {
+                match rx_data.try_into() {
+                    Ok(channel) => {
+                        data.push(Some(channel));
+                    }
+                    Err(_) => {
+                        error!("Error converting data to channel");
+                        data.push(None);
+                    }
                 }
             }
         } else {
@@ -211,20 +216,27 @@ fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Channel>, ()> 
     Ok(data)
 }
 
-fn write_channels(serial_port: &mut Box<dyn SerialPort>, channels: Vec<Channel>) -> Result<(), ()> {
-    if channels.len() != 16 {
+fn write_channels(
+    serial_port: &mut Box<dyn SerialPort>,
+    channels: Vec<Option<Channel>>,
+) -> Result<(), ()> {
+    if channels.len() > 22 {
         error!("Too many channels");
         Err(())
     } else {
-        for (channel_index, channel) in channels.iter().enumerate() {
+        for i in 0..22 {
             let mut command: Vec<u8> = vec![0x57];
-            let write_address: u16 = (channel_index as u16) * 11;
+            let write_address: u16 = (i as u16) * 11;
             let write_address_bytes = write_address.to_be_bytes();
             command.push(write_address_bytes[0]);
             command.push(write_address_bytes[1]);
             command.push(0x0b);
-            let channel_data: Vec<u8> = channel.into();
-            command.extend(channel_data);
+            if let Some(Some(channel)) = channels.get(i) {
+                let channel_data: Vec<u8> = channel.into();
+                command.extend(channel_data);
+            } else {
+                command.extend([0xff; 11]);
+            }
             debug!("Sending command: {:x?}", command);
             let rx = send_command(serial_port, &command, 1)?;
             match rx[0] {
@@ -261,8 +273,13 @@ fn main() {
                         info!("Channel {}: {:?}", channel_index, channel);
                     }
                 }
-                Command::WriteDefault => {
-                    let channels = default_channels();
+                Command::WriteDefaultPmr => {
+                    let channels = default_pmr_channels();
+                    write_channels(&mut port, channels).unwrap();
+                    info!("Channels written!");
+                }
+                Command::WriteDefaultFrs => {
+                    let channels = default_frs_channels();
                     write_channels(&mut port, channels).unwrap();
                     info!("Channels written!");
                 }

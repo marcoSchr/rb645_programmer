@@ -24,8 +24,8 @@ pub fn frequency_from_bytes(bytes: &[u8]) -> u32 {
     }
     let mut frequency = 40000000;
     frequency += bytes[0] as u32;
-    frequency += (bytes[1] as u32 - 0x5A) << 8;
-    frequency += (bytes[2] as u32 - 0x62) << 16;
+    frequency += (bytes[1].wrapping_sub(0x5A) as u32) << 8;
+    frequency += (bytes[2].wrapping_sub(0x62) as u32) << 16;
     frequency
 }
 
@@ -543,6 +543,18 @@ impl TryFrom<&[u8]> for Dcs {
             [0x13, 0x80] => Ok(Dcs::D023N),
             [0x15, 0x80] => Ok(Dcs::D025N),
             [0x16, 0x80] => Ok(Dcs::D026N),
+            [0x1a, 0x80] => Ok(Dcs::D032N),
+            [0x27, 0x80] => Ok(Dcs::D047N),
+            [0x29, 0x80] => Ok(Dcs::D051N),
+            [0x2b, 0x80] => Ok(Dcs::D053N),
+            [0x35, 0x80] => Ok(Dcs::D065N),
+            [0x4e, 0x80] => Ok(Dcs::D116N),
+            [0xa3, 0x80] => Ok(Dcs::D243N),
+            [0x86, 0x81] => Ok(Dcs::D606N),
+            [0xa3, 0xc0] => Ok(Dcs::D243I),
+            [0xda, 0xc0] => Ok(Dcs::D332I),
+            [0xd9, 0xc1] => Ok(Dcs::D731I),
+            [0xe3, 0xc1] => Ok(Dcs::D743I),
             [0xec, 0xc1] => Ok(Dcs::D754I),
             _ => Err(()),
         }
@@ -555,9 +567,20 @@ impl From<&Dcs> for Vec<u8> {
             Dcs::D023N => vec![0x13, 0x80],
             Dcs::D025N => vec![0x15, 0x80],
             Dcs::D026N => vec![0x16, 0x80],
+            Dcs::D032N => vec![0x1a, 0x80],
+            Dcs::D047N => vec![0x27, 0x80],
+            Dcs::D051N => vec![0x29, 0x80],
+            Dcs::D053N => vec![0x2b, 0x80],
+            Dcs::D065N => vec![0x35, 0x80],
+            Dcs::D116N => vec![0x4e, 0x80],
+            Dcs::D243N => vec![0xa3, 0x80],
             Dcs::D423N => vec![0x13, 0x81],
+            Dcs::D606N => vec![0x86, 0x81],
             Dcs::D743N => vec![0xe3, 0x81],
+            Dcs::D243I => vec![0xa3, 0xc0],
+            Dcs::D332I => vec![0xda, 0xc0],
             Dcs::D516I => vec![0x4e, 0xc1],
+            Dcs::D731I => vec![0xd9, 0xc1],
             Dcs::D743I => vec![0xe3, 0xc1],
             Dcs::D754I => vec![0xec, 0xc1],
             _ => unimplemented!(),

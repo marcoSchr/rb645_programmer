@@ -1,13 +1,18 @@
 use crate::channel::Bandwidth::Narrow;
-use crate::channel::Ctcss::Ctcss1148;
+use crate::channel::Ctcss::{
+    Ctcss670, Ctcss1148, Ctcss1188, Ctcss1230, Ctcss1273, Ctcss1318, Ctcss1365, Ctcss1413,
+    Ctcss1462,
+};
 use crate::channel::CtcssDcs::{Ctcss, Dcs};
-use crate::channel::Dcs::D026N;
-use crate::channel::TxPower::Low;
+use crate::channel::Dcs::{
+    D026N, D032N, D047N, D051N, D053N, D065N, D116N, D243I, D243N, D332I, D606N, D731I, D743I,
+};
+use crate::channel::TxPower::{High, Low};
 use crate::channel::{Channel, ChannelData};
 
-pub fn default_channels() -> Vec<Channel> {
+pub fn default_pmr_channels() -> Vec<Option<Channel>> {
     vec![
-        Channel {
+        Some(Channel {
             rx_frequency: 44600625,
             tx_frequency: 44600625,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -22,8 +27,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44601875,
             tx_frequency: 44601875,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -38,8 +43,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44603125,
             tx_frequency: 44603125,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -54,8 +59,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44604375,
             tx_frequency: 44604375,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -70,8 +75,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44605625,
             tx_frequency: 44605625,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -86,8 +91,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44606875,
             tx_frequency: 44606875,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -102,8 +107,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44608125,
             tx_frequency: 44608125,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -118,8 +123,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44609375,
             tx_frequency: 44609375,
             rx_ctcss_dcs: Ctcss(Ctcss1148),
@@ -134,8 +139,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44610625,
             tx_frequency: 44610625,
             rx_ctcss_dcs: Dcs(D026N),
@@ -150,8 +155,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44611875,
             tx_frequency: 44611875,
             rx_ctcss_dcs: Dcs(D026N),
@@ -166,8 +171,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44613125,
             tx_frequency: 44613125,
             rx_ctcss_dcs: Dcs(D026N),
@@ -182,8 +187,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44614375,
             tx_frequency: 44614375,
             rx_ctcss_dcs: Dcs(D026N),
@@ -198,8 +203,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44615625,
             tx_frequency: 44615625,
             rx_ctcss_dcs: Dcs(D026N),
@@ -214,8 +219,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44616875,
             tx_frequency: 44616875,
             rx_ctcss_dcs: Dcs(D026N),
@@ -230,8 +235,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44618125,
             tx_frequency: 44618125,
             rx_ctcss_dcs: Dcs(D026N),
@@ -246,8 +251,8 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
-        Channel {
+        }),
+        Some(Channel {
             rx_frequency: 44619375,
             tx_frequency: 44619375,
             rx_ctcss_dcs: Dcs(D026N),
@@ -262,6 +267,369 @@ pub fn default_channels() -> Vec<Channel> {
                 bandwidth: Narrow,
                 busy_lock: false,
             },
-        },
+        }),
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]
+}
+
+pub fn default_frs_channels() -> Vec<Option<Channel>> {
+    vec![
+        Some(Channel {
+            rx_frequency: 46256250,
+            tx_frequency: 46256250,
+            rx_ctcss_dcs: Ctcss(Ctcss670),
+            tx_ctcss_dcs: Ctcss(Ctcss670),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46258750,
+            tx_frequency: 46258750,
+            rx_ctcss_dcs: Ctcss(Ctcss1188),
+            tx_ctcss_dcs: Ctcss(Ctcss1188),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46261250,
+            tx_frequency: 46261250,
+            rx_ctcss_dcs: Ctcss(Ctcss1273),
+            tx_ctcss_dcs: Ctcss(Ctcss1273),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46263750,
+            tx_frequency: 46263750,
+            rx_ctcss_dcs: Ctcss(Ctcss1318),
+            tx_ctcss_dcs: Ctcss(Ctcss1318),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46266250,
+            tx_frequency: 46266250,
+            rx_ctcss_dcs: Ctcss(Ctcss1365),
+            tx_ctcss_dcs: Ctcss(Ctcss1365),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46334286,
+            tx_frequency: 46334286,
+            rx_ctcss_dcs: Ctcss(Ctcss1413),
+            tx_ctcss_dcs: Ctcss(Ctcss1413),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46336786,
+            tx_frequency: 46336786,
+            rx_ctcss_dcs: Ctcss(Ctcss1462),
+            tx_ctcss_dcs: Ctcss(Ctcss1462),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46756250,
+            tx_frequency: 46756250,
+            rx_ctcss_dcs: Dcs(D243N),
+            tx_ctcss_dcs: Dcs(D243N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46758750,
+            tx_frequency: 46758750,
+            rx_ctcss_dcs: Dcs(D032N),
+            tx_ctcss_dcs: Dcs(D032N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46761250,
+            tx_frequency: 46761250,
+            rx_ctcss_dcs: Dcs(D047N),
+            tx_ctcss_dcs: Dcs(D047N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46763750,
+            tx_frequency: 46763750,
+            rx_ctcss_dcs: Dcs(D051N),
+            tx_ctcss_dcs: Dcs(D051N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46766250,
+            tx_frequency: 46766250,
+            rx_ctcss_dcs: Dcs(D053N),
+            tx_ctcss_dcs: Dcs(D053N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46768750,
+            tx_frequency: 46768750,
+            rx_ctcss_dcs: Dcs(D065N),
+            tx_ctcss_dcs: Dcs(D065N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46771250,
+            tx_frequency: 46771250,
+            rx_ctcss_dcs: Dcs(D116N),
+            tx_ctcss_dcs: Dcs(D116N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: Low,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46255000,
+            tx_frequency: 46255000,
+            rx_ctcss_dcs: Ctcss(Ctcss1230),
+            tx_ctcss_dcs: Ctcss(Ctcss1230),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46257500,
+            tx_frequency: 46257500,
+            rx_ctcss_dcs: Dcs(D743I),
+            tx_ctcss_dcs: Dcs(D743I),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46260000,
+            tx_frequency: 46260000,
+            rx_ctcss_dcs: Dcs(D332I),
+            tx_ctcss_dcs: Dcs(D332I),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46262500,
+            tx_frequency: 46262500,
+            rx_ctcss_dcs: Ctcss(Ctcss1273),
+            tx_ctcss_dcs: Ctcss(Ctcss1273),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46265000,
+            tx_frequency: 46265000,
+            rx_ctcss_dcs: Dcs(D243I),
+            tx_ctcss_dcs: Dcs(D243I),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46267500,
+            tx_frequency: 46267500,
+            rx_ctcss_dcs: Dcs(D606N),
+            tx_ctcss_dcs: Dcs(D606N),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46335536,
+            tx_frequency: 46335536,
+            rx_ctcss_dcs: Dcs(D731I),
+            tx_ctcss_dcs: Dcs(D731I),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
+        Some(Channel {
+            rx_frequency: 46338036,
+            tx_frequency: 46338036,
+            rx_ctcss_dcs: Ctcss(Ctcss1365),
+            tx_ctcss_dcs: Ctcss(Ctcss1365),
+            data: ChannelData {
+                _unknown0: true,
+                _unknown1: true,
+                _unknown2: true,
+                scan_add: false,
+                tx_power: High,
+                _unknown3: true,
+                bandwidth: Narrow,
+                busy_lock: false,
+            },
+        }),
     ]
 }
