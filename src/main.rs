@@ -224,14 +224,14 @@ fn write_channels(
         error!("Too many channels");
         Err(())
     } else {
-        for (channel_index, channel) in channels.iter().enumerate() {
+        for i in 0..22 {
             let mut command: Vec<u8> = vec![0x57];
-            let write_address: u16 = (channel_index as u16) * 11;
+            let write_address: u16 = (i as u16) * 11;
             let write_address_bytes = write_address.to_be_bytes();
             command.push(write_address_bytes[0]);
             command.push(write_address_bytes[1]);
             command.push(0x0b);
-            if let Some(channel) = channel {
+            if let Some(Some(channel)) = channels.get(i) {
                 let channel_data: Vec<u8> = channel.into();
                 command.extend(channel_data);
             } else {
