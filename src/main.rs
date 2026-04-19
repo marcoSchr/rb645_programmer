@@ -1,7 +1,7 @@
 pub mod channel;
 
 use crate::channel::Channel;
-use crate::channel::default_channels::default_channels;
+use crate::channel::default_channels::{default_frs_channels, default_pmr_channels};
 use clap::{Parser, Subcommand};
 use env_logger::Builder;
 use log::{LevelFilter, debug, error, info};
@@ -17,7 +17,8 @@ const SERIAL_READ_DELAY: Duration = Duration::from_millis(10);
 #[derive(Subcommand, Debug)]
 enum Command {
     Read,
-    WriteDefault,
+    WriteDefaultPmr,
+    WriteDefaultFrs,
 }
 
 #[derive(Parser, Debug)]
@@ -219,7 +220,7 @@ fn write_channels(
     serial_port: &mut Box<dyn SerialPort>,
     channels: Vec<Option<Channel>>,
 ) -> Result<(), ()> {
-    if channels.len() != 16 {
+    if channels.len() > 22 {
         error!("Too many channels");
         Err(())
     } else {
@@ -272,8 +273,13 @@ fn main() {
                         info!("Channel {}: {:?}", channel_index, channel);
                     }
                 }
-                Command::WriteDefault => {
-                    let channels = default_channels();
+                Command::WriteDefaultPmr => {
+                    let channels = default_pmr_channels();
+                    write_channels(&mut port, channels).unwrap();
+                    info!("Channels written!");
+                }
+                Command::WriteDefaultFrs => {
+                    let channels = default_frs_channels();
                     write_channels(&mut port, channels).unwrap();
                     info!("Channels written!");
                 }
