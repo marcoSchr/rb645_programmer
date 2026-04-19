@@ -24,8 +24,8 @@ pub fn frequency_from_bytes(bytes: &[u8]) -> u32 {
     }
     let mut frequency = 40000000;
     frequency += bytes[0] as u32;
-    frequency += (bytes[1] as u32 - 0x5A) << 8;
-    frequency += (bytes[2] as u32 - 0x62) << 16;
+    frequency += (bytes[1].wrapping_sub(0x5A) as u32) << 8;
+    frequency += (bytes[2].wrapping_sub(0x62) as u32) << 16;
     frequency
 }
 
