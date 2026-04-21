@@ -24,11 +24,11 @@ pub fn frequency_from_bytes(bytes: &[u8]) -> u32 {
     if bytes.len() != 3 {
         return 0;
     }
-    let mut frequency = 40000000;
-    frequency += bytes[0] as u32;
-    frequency += (bytes[1].wrapping_sub(0x5A) as u32) << 8;
-    frequency += (bytes[2].wrapping_sub(0x62) as u32) << 16;
-    frequency
+    let mut frequency: i64 = 40000000;
+    frequency += bytes[0] as i64;
+    frequency += (bytes[1] as i64 - 0x5A) * 256;
+    frequency += (bytes[2] as i64 - 0x62) * 65536;
+    frequency as u32
 }
 
 impl TryFrom<&[u8]> for Channel {
