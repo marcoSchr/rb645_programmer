@@ -74,11 +74,21 @@ fn default_pmr_bytes() -> Vec<Vec<u8>> {
 
 #[test]
 fn test_decode_bytes() {
-    for (channel, bytes) in default_pmr_channels()
-        .into_iter()
-        .zip(default_pmr_bytes().into_iter())
-    {
+    for (channel, bytes) in default_pmr_channels().into_iter().zip(default_pmr_bytes()) {
         let decoded_channel: Option<Channel> = bytes.as_slice().try_into().ok();
         assert_eq!(channel, decoded_channel)
+    }
+}
+
+#[test]
+fn test_encode_bytes() {
+    for (channel, bytes) in default_pmr_channels().into_iter().zip(default_pmr_bytes()) {
+        let encoded_bytes: Vec<u8> = if let Some(channel) = channel {
+            (&channel).into()
+        } else {
+            vec![0xff; 11]
+        };
+
+        assert_eq!(bytes, encoded_bytes)
     }
 }
