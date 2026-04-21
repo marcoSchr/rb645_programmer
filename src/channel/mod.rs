@@ -1,6 +1,8 @@
 pub mod default_channels;
+#[cfg(test)]
+mod tests;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub struct Channel {
     pub rx_frequency: u32,
     pub tx_frequency: u32,
@@ -33,6 +35,9 @@ impl TryFrom<&[u8]> for Channel {
     type Error = ();
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         if value.len() != 11 {
+            return Err(());
+        }
+        if value.iter().all(|&x| x == 0xff) {
             return Err(());
         }
         Ok(Channel {
@@ -70,7 +75,7 @@ enum TxPower {
     High,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub struct ChannelData {
     _unknown0: bool,
     _unknown1: bool,
@@ -118,7 +123,7 @@ impl From<&ChannelData> for u8 {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub enum CtcssDcs {
     Ctcss(Ctcss),
     Dcs(Dcs),
@@ -152,7 +157,7 @@ impl From<&CtcssDcs> for Vec<u8> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum Ctcss {
     Ctcss670,
     Ctcss693,
@@ -323,7 +328,7 @@ impl TryFrom<&[u8]> for Ctcss {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum Dcs {
     D023N,
     D025N,
