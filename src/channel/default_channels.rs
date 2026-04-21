@@ -360,8 +360,8 @@ pub fn default_frs_channels() -> Vec<Option<Channel>> {
             },
         }),
         Some(Channel {
-            rx_frequency: 46334286,
-            tx_frequency: 46334286,
+            rx_frequency: 46268750,
+            tx_frequency: 46268750,
             rx_ctcss_dcs: Ctcss(Ctcss1413),
             tx_ctcss_dcs: Ctcss(Ctcss1413),
             data: ChannelData {
@@ -376,8 +376,8 @@ pub fn default_frs_channels() -> Vec<Option<Channel>> {
             },
         }),
         Some(Channel {
-            rx_frequency: 46336786,
-            tx_frequency: 46336786,
+            rx_frequency: 46271250,
+            tx_frequency: 46271250,
             rx_ctcss_dcs: Ctcss(Ctcss1462),
             tx_ctcss_dcs: Ctcss(Ctcss1462),
             data: ChannelData {
@@ -600,8 +600,8 @@ pub fn default_frs_channels() -> Vec<Option<Channel>> {
             },
         }),
         Some(Channel {
-            rx_frequency: 46335536,
-            tx_frequency: 46335536,
+            rx_frequency: 46270000,
+            tx_frequency: 46270000,
             rx_ctcss_dcs: Dcs(D731I),
             tx_ctcss_dcs: Dcs(D731I),
             data: ChannelData {
@@ -616,8 +616,8 @@ pub fn default_frs_channels() -> Vec<Option<Channel>> {
             },
         }),
         Some(Channel {
-            rx_frequency: 46338036,
-            tx_frequency: 46338036,
+            rx_frequency: 46272500,
+            tx_frequency: 46272500,
             rx_ctcss_dcs: Ctcss(Ctcss1365),
             tx_ctcss_dcs: Ctcss(Ctcss1365),
             data: ChannelData {
