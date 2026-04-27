@@ -1,3 +1,5 @@
+use log::error;
+
 pub mod default_channels;
 #[cfg(test)]
 mod tests;
@@ -17,6 +19,48 @@ pub fn bytes_from_frequency(frequency: u32) -> Vec<u8> {
     bytes[1] = (((frequency - 40000000) >> 8) + 0x5A) as u8;
     bytes[2] = (((frequency - 40000000) >> 16) + 0x62) as u8;
 
+    let calculated_frequency = frequency_from_bytes(&bytes);
+
+    // Sometimes calculated bytes are off by one
+    // To avoid this we calculate the frequency from the bytes and check the difference
+    // to the requested frequency
+    // We have the 8 possible values hardcoded
+    // Off by +/- 65536 and or +/- 256
+    let difference = frequency as i64 - calculated_frequency as i64;
+    match difference {
+        65536 => {
+            bytes[2] += 1;
+        }
+        -65536 => {
+            bytes[2] -= 1;
+        }
+        256 => {
+            bytes[1] += 1;
+        }
+        -256 => {
+            bytes[1] -= 1;
+        }
+        65792 => {
+            bytes[1] += 1;
+            bytes[2] += 1;
+        }
+        65280 => {
+            bytes[1] -= 1;
+            bytes[2] += 1;
+        }
+        -65792 => {
+            bytes[1] += 1;
+            bytes[2] -= 1;
+        }
+        -65280 => {
+            bytes[1] -= 1;
+            bytes[2] -= 1;
+        }
+
+        x => {
+            error!("Unexpected difference: {}", x);
+        }
+    }
     bytes.to_vec()
 }
 
