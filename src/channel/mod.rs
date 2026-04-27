@@ -1,6 +1,10 @@
-pub mod default_channels;
+use log::error;
 
-#[derive(Debug, Default)]
+pub mod default_channels;
+#[cfg(test)]
+mod tests;
+
+#[derive(Debug, Default, Eq, PartialEq)]
 pub struct Channel {
     pub rx_frequency: u32,
     pub tx_frequency: u32,
@@ -15,6 +19,48 @@ pub fn bytes_from_frequency(frequency: u32) -> Vec<u8> {
     bytes[1] = (((frequency - 40000000) >> 8) + 0x5A) as u8;
     bytes[2] = (((frequency - 40000000) >> 16) + 0x62) as u8;
 
+    let calculated_frequency = frequency_from_bytes(&bytes);
+
+    // Sometimes calculated bytes are off by one
+    // To avoid this we calculate the frequency from the bytes and check the difference
+    // to the requested frequency
+    // We have the 8 possible values hardcoded
+    // Off by +/- 65536 and or +/- 256
+    let difference = frequency as i64 - calculated_frequency as i64;
+    match difference {
+        65536 => {
+            bytes[2] += 1;
+        }
+        -65536 => {
+            bytes[2] -= 1;
+        }
+        256 => {
+            bytes[1] += 1;
+        }
+        -256 => {
+            bytes[1] -= 1;
+        }
+        65792 => {
+            bytes[1] += 1;
+            bytes[2] += 1;
+        }
+        65280 => {
+            bytes[1] -= 1;
+            bytes[2] += 1;
+        }
+        -65792 => {
+            bytes[1] += 1;
+            bytes[2] -= 1;
+        }
+        -65280 => {
+            bytes[1] -= 1;
+            bytes[2] -= 1;
+        }
+
+        x => {
+            error!("Unexpected difference: {}", x);
+        }
+    }
     bytes.to_vec()
 }
 
@@ -22,17 +68,20 @@ pub fn frequency_from_bytes(bytes: &[u8]) -> u32 {
     if bytes.len() != 3 {
         return 0;
     }
-    let mut frequency = 40000000;
-    frequency += bytes[0] as u32;
-    frequency += (bytes[1].wrapping_sub(0x5A) as u32) << 8;
-    frequency += (bytes[2].wrapping_sub(0x62) as u32) << 16;
-    frequency
+    let mut frequency: i64 = 40000000;
+    frequency += bytes[0] as i64;
+    frequency += (bytes[1] as i64 - 0x5A) * 256;
+    frequency += (bytes[2] as i64 - 0x62) * 65536;
+    frequency as u32
 }
 
 impl TryFrom<&[u8]> for Channel {
     type Error = ();
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         if value.len() != 11 {
+            return Err(());
+        }
+        if value.iter().all(|&x| x == 0xff) {
             return Err(());
         }
         Ok(Channel {
@@ -70,7 +119,7 @@ enum TxPower {
     High,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub struct ChannelData {
     _unknown0: bool,
     _unknown1: bool,
@@ -111,14 +160,14 @@ impl From<&ChannelData> for u8 {
             | (value._unknown1 as u8) << 6
             | (value._unknown2 as u8) << 5
             | ((true ^ value.scan_add) as u8) << 4
-            | ((value.tx_power == TxPower::Low) as u8) << 3
+            | ((value.tx_power == TxPower::High) as u8) << 3
             | (value._unknown3 as u8) << 2
-            | ((value.bandwidth == Bandwidth::Wide) as u8) << 1
+            | ((value.bandwidth == Bandwidth::Narrow) as u8) << 1
             | ((true ^ value.busy_lock) as u8)
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub enum CtcssDcs {
     Ctcss(Ctcss),
     Dcs(Dcs),
@@ -152,7 +201,7 @@ impl From<&CtcssDcs> for Vec<u8> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum Ctcss {
     Ctcss670,
     Ctcss693,
@@ -323,7 +372,7 @@ impl TryFrom<&[u8]> for Ctcss {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum Dcs {
     D023N,
     D025N,
