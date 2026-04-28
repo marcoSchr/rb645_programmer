@@ -56,7 +56,7 @@ pub fn bytes_from_frequency(frequency: u32) -> Vec<u8> {
             bytes[1] -= 1;
             bytes[2] -= 1;
         }
-
+        0 => {}
         x => {
             error!("Unexpected difference: {}", x);
         }
