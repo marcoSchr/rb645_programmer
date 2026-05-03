@@ -15,9 +15,9 @@ pub struct Channel {
 
 pub fn bytes_from_frequency(frequency: u32) -> Vec<u8> {
     let mut bytes = [0, 0, 0];
-    bytes[0] = (frequency - 40000000) as u8;
-    bytes[1] = (((frequency - 40000000) >> 8) + 0x5A) as u8;
-    bytes[2] = (((frequency - 40000000) >> 16) + 0x62) as u8;
+    bytes[0] = (frequency as i64 - 40000000) as u8;
+    bytes[1] = (((frequency as i64 - 40000000) >> 8) as u8).wrapping_add(0x5A);
+    bytes[2] = (((frequency as i64 - 40000000) >> 16) as u8).wrapping_add(0x62);
 
     let calculated_frequency = frequency_from_bytes(&bytes);
 
@@ -29,32 +29,35 @@ pub fn bytes_from_frequency(frequency: u32) -> Vec<u8> {
     let difference = frequency as i64 - calculated_frequency as i64;
     match difference {
         65536 => {
-            bytes[2] += 1;
+            bytes[2] = bytes[2].wrapping_add(1);
         }
         -65536 => {
-            bytes[2] -= 1;
+            bytes[2] = bytes[2].wrapping_sub(1);
         }
         256 => {
-            bytes[1] += 1;
+            bytes[1] = bytes[1].wrapping_add(1);
         }
         -256 => {
-            bytes[1] -= 1;
+            bytes[1] = bytes[1].wrapping_sub(1);
         }
         65792 => {
-            bytes[1] += 1;
-            bytes[2] += 1;
+            bytes[1] = bytes[1].wrapping_add(1);
+            bytes[2] = bytes[2].wrapping_add(1);
         }
         65280 => {
-            bytes[1] -= 1;
-            bytes[2] += 1;
+            bytes[1] = bytes[1].wrapping_sub(1);
+            bytes[2] = bytes[2].wrapping_add(1);
         }
         -65792 => {
-            bytes[1] += 1;
-            bytes[2] -= 1;
+            bytes[1] = bytes[1].wrapping_add(1);
+            bytes[2] = bytes[2].wrapping_sub(1);
         }
         -65280 => {
-            bytes[1] -= 1;
-            bytes[2] -= 1;
+            bytes[1] = bytes[1].wrapping_sub(1);
+            bytes[2] = bytes[2].wrapping_sub(1);
+        }
+        -16711680 => {
+            bytes[2] = bytes[2].wrapping_add(1);
         }
         0 => {}
         x => {

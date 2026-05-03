@@ -1,5 +1,6 @@
-use crate::channel::Channel;
 use crate::channel::default_channels::{default_frs_channels, default_pmr_channels};
+use crate::channel::{Channel, bytes_from_frequency, frequency_from_bytes};
+use rand::RngExt;
 
 fn default_pmr_bytes() -> Vec<Vec<u8>> {
     vec![
@@ -182,5 +183,19 @@ fn test_encode_bytes_frs() {
         };
 
         assert_eq!(bytes, encoded_bytes)
+    }
+}
+
+#[test]
+fn fuzz_encode_bytes() {
+    let mut rng = rand::rng();
+    for _ in 0..100000 {
+        let random_byte_0 = rng.random::<u8>();
+        let random_byte_1 = rng.random::<u8>();
+        let random_byte_2 = rng.random::<u8>();
+        let bytes = vec![random_byte_0, random_byte_1, random_byte_2];
+        let frequency = frequency_from_bytes(&bytes);
+        let calculated_bytes = bytes_from_frequency(frequency);
+        assert_eq!(bytes, calculated_bytes);
     }
 }
