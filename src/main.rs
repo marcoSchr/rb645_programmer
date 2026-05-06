@@ -1,7 +1,10 @@
 pub mod channel;
+mod settings;
 
 use crate::channel::Channel;
 use crate::channel::default_channels::{default_frs_channels, default_pmr_channels};
+use crate::settings::Settings;
+use crate::settings::default_settings::default_settings;
 use clap::{Parser, Subcommand};
 use env_logger::Builder;
 use log::{LevelFilter, debug, error, info};
@@ -213,6 +216,15 @@ fn read_data(serial_port: &mut Box<dyn SerialPort>) -> Result<Vec<Option<Channel
             exit(1);
         }
     }
+    let read_address: i16 = 22 * 11;
+    let read_address_bytes = read_address.to_be_bytes();
+    command[1] = read_address_bytes[0];
+    command[2] = read_address_bytes[1];
+    debug!("Sending command: {:x?}", command);
+    let rx = send_command(serial_port, &command, 15)?;
+    let (_, rx_data) = rx.split_at(4);
+    let settings: Settings = rx_data.try_into()?;
+    info!("Settings: {:#?}", settings);
     Ok(data)
 }
 
@@ -251,6 +263,27 @@ fn write_channels(
     }
 }
 
+fn write_settings(serial_port: &mut Box<dyn SerialPort>, settings: Settings) -> Result<(), ()> {
+    let mut command: Vec<u8> = vec![0x57];
+    let write_address: u16 = (22) * 11;
+    let write_address_bytes = write_address.to_be_bytes();
+    command.push(write_address_bytes[0]);
+    command.push(write_address_bytes[1]);
+    command.push(0x0b);
+    let settings_data: Vec<u8> = settings.into();
+    command.extend(settings_data);
+    debug!("Sending command: {:x?}", command);
+    let rx = send_command(serial_port, &command, 1)?;
+    match rx[0] {
+        SUCCESS => (),
+        i => {
+            error!("Error writing settings: {}", i);
+            exit(1);
+        }
+    }
+    Ok(())
+}
+
 fn main() {
     Builder::new().filter_level(LevelFilter::Info).init();
 
@@ -276,11 +309,13 @@ fn main() {
                 Command::WriteDefaultPmr => {
                     let channels = default_pmr_channels();
                     write_channels(&mut port, channels).unwrap();
+                    write_settings(&mut port, default_settings()).unwrap();
                     info!("Channels written!");
                 }
                 Command::WriteDefaultFrs => {
                     let channels = default_frs_channels();
                     write_channels(&mut port, channels).unwrap();
+                    write_settings(&mut port, default_settings()).unwrap();
                     info!("Channels written!");
                 }
             }
