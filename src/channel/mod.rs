@@ -146,8 +146,8 @@ impl From<u8> for ChannelData {
             } else {
                 TxPower::Low
             },
-            _unknown3: value & 0x04 != 0,
-            bandwidth: if value & 0x02 == 0 {
+            _unknown3: value & 0x02 != 0,
+            bandwidth: if value & 0x04 == 0 {
                 Bandwidth::Wide
             } else {
                 Bandwidth::Narrow
