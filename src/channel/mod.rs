@@ -164,8 +164,8 @@ impl From<&ChannelData> for u8 {
             | (value._unknown2 as u8) << 5
             | ((true ^ value.scan_add) as u8) << 4
             | ((value.tx_power == TxPower::High) as u8) << 3
-            | (value._unknown3 as u8) << 2
-            | ((value.bandwidth == Bandwidth::Narrow) as u8) << 1
+            | (value._unknown3 as u8) << 1
+            | ((value.bandwidth == Bandwidth::Narrow) as u8) << 2
             | ((true ^ value.busy_lock) as u8)
     }
 }
