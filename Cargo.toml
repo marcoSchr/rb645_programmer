@@ -1,13 +1,10 @@
-[package]
-name = "rb645"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "3"
+members = ["rb645cli"]
 
-[dependencies]
-serialport = "4.7.0"
-env_logger = "0.11.6"
-log = "0.4.25"
+[workspace.dependencies]
 clap = { version = "4.5.26", features = ["derive"] }
-
-[dev-dependencies]
-rand = "0.10.1"
+env_logger = { version = "0.11.6" }
+log = { version = "0.4.25" }
+rand = { version = "0.10.1" }
+serialport = { version = "4.7.0" }

@@ -1,0 +1,13 @@
+[package]
+name = "rb645cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serialport = { workspace = true }
+env_logger = { workspace = true }
+log = { workspace = true }
+clap = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
