@@ -1,13 +1,10 @@
-pub mod channel;
-mod settings;
-
-use crate::channel::Channel;
-use crate::channel::default_channels::{default_frs_channels, default_pmr_channels};
-use crate::settings::Settings;
-use crate::settings::default_settings::default_settings;
 use clap::{Parser, Subcommand};
 use env_logger::Builder;
 use log::{LevelFilter, debug, error, info};
+use rb645memory::channel::Channel;
+use rb645memory::channel::default_channels::{default_frs_channels, default_pmr_channels};
+use rb645memory::settings::Settings;
+use rb645memory::settings::default_settings::default_settings;
 use serialport::SerialPort;
 use std::io::Write;
 use std::process::exit;
