@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["rb645cli", "rb645memory"]
+members = ["rb645cli", "rb645communication", "rb645memory"]
 
 [workspace.dependencies]
 clap = { version = "4.5.26", features = ["derive"] }
@@ -9,4 +9,5 @@ log = { version = "0.4.25" }
 rand = { version = "0.10.1" }
 serialport = { version = "4.7.0" }
 
+rb645communication = { path = "./rb645communication" }
 rb645memory = { path = "./rb645memory" }

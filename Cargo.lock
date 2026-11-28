@@ -386,6 +386,16 @@ dependencies = [
  "clap",
  "env_logger",
  "log",
+ "rb645communication",
+ "rb645memory",
+ "serialport",
+]
+
+[[package]]
+name = "rb645communication"
+version = "0.1.0"
+dependencies = [
+ "log",
  "rb645memory",
  "serialport",
 ]

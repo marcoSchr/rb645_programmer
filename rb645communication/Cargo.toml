@@ -1,0 +1,10 @@
+[package]
+name = "rb645communication"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+log = { workspace = true }
+serialport = { workspace = true }
+
+rb645memory = { workspace = true }

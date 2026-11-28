@@ -9,4 +9,6 @@ env_logger = { workspace = true }
 log = { workspace = true }
 clap = { workspace = true }
 
+rb645communication = { workspace = true }
+
 rb645memory = { workspace = true }
